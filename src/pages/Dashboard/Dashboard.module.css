@@ -1,0 +1,77 @@
+.mainContainer{
+  display: flex;
+  
+}
+.userControl{
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+  width: 15vw;
+  background-color: #EDF5FE;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  /* position: fixed; */
+  
+}
+.sideDashboard{
+  display: flex;
+  gap:10px;
+  cursor: pointer;
+}
+.logout{
+  color: #CF3636;
+  display: flex;
+  margin-top: auto;
+  gap: 10px;
+  cursor: pointer;
+}
+.mainDash{
+  display: flex;
+  height: 100vh;
+  width: 85vw;
+  /* justify-content: space-between; */
+  padding: 20px;
+  flex-direction: column;
+  gap:10px;
+}
+.mainDash1 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.mainDash2 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+/* .mainDah2 div{
+  display:flex;
+  flex-direction: row;
+} */
+.group{
+  display: flex;
+  justify-content: space-evenly;
+  position: absolute;
+  top: 17vh;
+  gap: 5px;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+ 
+}
+.insideGroup{
+    height: 80vh;
+    width: 20vw;
+    background-color: #EEF2F5;
+    overflow-y: scroll;
+}
+.inside1 img{
+  position: relative;
+  top: 5px; left: 50% ;
+  padding: 0px 5px;
+  cursor: pointer;
+}
+.insideGroup span{
+  position: relative;
+  padding: 10px 0px 0px 10px;
+}

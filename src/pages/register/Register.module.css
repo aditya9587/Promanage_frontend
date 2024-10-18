@@ -1,0 +1,85 @@
+.container {
+  height: 100vh;
+  display: flex;
+  font-family: "Open Sans", sans-serif;
+}
+.logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 60vw;
+  background-color: #17a2b8;
+  color: white;
+}
+.logo img {
+  height: 200px;
+  width: 200px;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40vw;
+  text-align: center;
+}
+.emailIcon{
+  background: url("/images/icon.png") no-repeat scroll 10px 10px;
+  background-size: 20px 20px;
+}
+.passwordLock{
+  background: url("/images/lock.png") no-repeat scroll 10px 10px;
+  background-size: 20px 20px;
+}
+.view{
+  background: url("/images/view.png") no-repeat scroll 10px 10px;
+  background-size: 20px 20px;
+  background-position: 100%;
+}
+.userIcon{
+  background: url("/images/Profile.png") no-repeat scroll 10px 10px;
+  background-size: 20px 20px;
+}
+form{
+  width: 40vw;
+  padding: 2vw 5vw;
+}
+.login input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 40px;
+  padding-left:10%;
+  border-radius: 30px;
+  border: 1px solid grey;
+}
+.login button[type="submit"]{
+  width: 100%;
+  height: 40px;
+  color: white;
+  border-radius: 30px;
+  background-color: #17A2B8;
+  border: none;
+  font-size: medium;
+}
+.errmsg{
+  color:red;
+}
+.redirectbtn{
+  width: 75%;
+  height: 40px;
+  color: white;
+  border-radius: 30px;
+  margin-top: 20px;
+  background-color: white;
+  color: #17A2B8;
+  border:1px solid #17A2B8; 
+}
+.login p{
+  color: #828282;
+  font-weight: 400;
+}
