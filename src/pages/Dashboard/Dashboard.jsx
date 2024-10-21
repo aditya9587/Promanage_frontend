@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./Dashboard.module.css";
+import { contextUser } from "../../context/UserContext";
+import AddTask from "../../components/Addtask/AddTask";
 
 function Dashboard() {
+  const [currentDate, setCurrentDate] = useState("");
+  const [todoModal, setTodoModal] = useState(false);
+
+  const { signup, userName } = useContext(contextUser);
+
+  useEffect(() => {
+    const date = new Date();
+    const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
+      date
+    );
+    const dateFormat = `${date.getDate()}th, ${month}, ${date.getFullYear()}`;
+    setCurrentDate(dateFormat);
+
+    const firstNAme = userName.split(" ");
+  }, []);
+
+  function showTodoModal() {
+    setTodoModal(true);
+  }
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.userControl}>
@@ -28,8 +50,8 @@ function Dashboard() {
       </div>
       <div className={styles.mainDash}>
         <div className={styles.mainDash1}>
-          <h3>Welcome! Kumar</h3>
-          <div>12th Jan, 2024</div>
+          <h3>Welcome! {signup.name} </h3>
+          <div>{currentDate}</div>
         </div>
 
         <div className={styles.mainDash2}>
@@ -57,7 +79,7 @@ function Dashboard() {
             <div className={styles.inside1}>
               <span>To do</span>
 
-              <img src="/images/add.png" alt="" />
+              <img src="/images/add.png" alt="" onClick={showTodoModal} />
               <img src="/images/collapse.png" alt="" />
             </div>
           </div>
@@ -74,7 +96,8 @@ function Dashboard() {
             </div>
           </div>
         </div>
-      </div>
+      </div >
+      {todoModal ? <AddTask /> : null}
     </div>
   );
 }

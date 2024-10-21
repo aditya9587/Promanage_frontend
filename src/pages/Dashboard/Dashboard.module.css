@@ -71,7 +71,7 @@
   padding: 0px 5px;
   cursor: pointer;
 }
-.insideGroup span{
+.insideGroup .inside1{
   position: relative;
-  padding: 10px 0px 0px 10px;
+  padding: 5px 0px 0px 10px;
 }

@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { toast } from "react-toastify";
 import styles from "./Register.module.css";
 import { userCreate, userLogin } from "../../services/Userlogin";
 import { useNavigate } from "react-router-dom";
+import { contextUser } from "../../context/UserContext";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { signup, setsignup, setUserName, userName } = useContext(contextUser);
 
   const [value, setValue] = useState(true);
   const [login, setLogin] = useState({
     email: "",
     password: "",
-  });
-
-  const [signup, setsignup] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
   });
 
   const [errors, setError] = useState({
@@ -80,7 +76,15 @@ export default function Register() {
 
   async function handleLogin(e) {
     e.preventDefault();
-    const response = await userLogin(login);
+    try {
+      const response = await userLogin(login);
+      if (response.status === 200) {
+        toast("login successfully");
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      toast.error("something went wrong");
+    }
   }
 
   async function handleSignup(e) {
@@ -89,13 +93,15 @@ export default function Register() {
     if (validateSignup()) {
       const response = await userCreate(signup);
       if (response.status === 201) {
-        alert("Registered successfully");
+        console.log(response.config.data);
+        setUserName(signup.name);
+        toast("Registered successfully");
+        const token = response.data.Token;
+        localStorage.setItem("token", token);
         navigate("/dashboard");
       }
-      const token = response.data.Token;
-      localStorage.setItem("token", token);
     } else {
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     }
   }
 
@@ -110,7 +116,7 @@ export default function Register() {
           </div>
           <div className={styles.login}>
             <h2>Login</h2>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className={styles.submitForm}>
               <input
                 type="email"
                 name="email"
@@ -151,7 +157,7 @@ export default function Register() {
           </div>
           <div className={styles.login}>
             <h2>Register</h2>
-            <form onSubmit={handleSignup}>
+            <form onSubmit={handleSignup} className={styles.submitForm}>
               <input
                 type="text"
                 name="name"
@@ -160,7 +166,9 @@ export default function Register() {
                 onChange={handlechange2}
                 className={styles.userIcon}
               />
-                {errors.name && <p className={styles.errmsg}>{errorMessages.name.message}</p>}
+              {errors.name && (
+                <p className={styles.errmsg}>{errorMessages.name.message}</p>
+              )}
               <input
                 type="email"
                 name="email"
@@ -187,7 +195,9 @@ export default function Register() {
                 onChange={handlechange2}
                 className={styles.passwordLock}
               />
-              {errors.confirmPassword && <p>{errorMessages.confirmPassword.message}</p>}
+              {errors.confirmPassword && (
+                <p>{errorMessages.confirmPassword.message}</p>
+              )}
               <button type="submit">Register</button>
             </form>
             <p>Have an account ?</p>
