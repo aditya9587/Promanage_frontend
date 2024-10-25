@@ -6,17 +6,19 @@
   inset: 0;
   position:fixed;
   background-color: rgba(0, 0, 0, 0.4);
+ 
 }
 
 .formClass {
   display: flex;
   flex-direction: column;
   height: 70vh;
-  width: 45vw;
+  width: 50vw;
   gap: 10px;
   background-color: white;
-  padding: 10px;
-  border: 1px solid black;
+  padding: 15px;
+
+  border-radius: 18px;
 }
 .starSpan {
   color: red;

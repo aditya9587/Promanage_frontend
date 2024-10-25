@@ -3,16 +3,22 @@ import { toast } from "react-toastify";
 import styles from "./Register.module.css";
 import { userCreate, userLogin } from "../../services/Userlogin";
 import { useNavigate } from "react-router-dom";
-import { contextUser } from "../../context/UserContext";
+
 
 export default function Register() {
   const navigate = useNavigate();
-  const { signup, setsignup, setUserName, userName } = useContext(contextUser);
 
   const [value, setValue] = useState(true);
   const [login, setLogin] = useState({
     email: "",
     password: "",
+  });
+
+  const [signup, setsignup] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [errors, setError] = useState({
@@ -79,6 +85,9 @@ export default function Register() {
     try {
       const response = await userLogin(login);
       if (response.status === 200) {
+        const token = response.data.Token;
+        console.log(token);
+        localStorage.setItem("token", token);
         toast("login successfully");
         navigate("/dashboard");
       }
@@ -93,12 +102,9 @@ export default function Register() {
     if (validateSignup()) {
       const response = await userCreate(signup);
       if (response.status === 201) {
-        console.log(response.config.data);
         setUserName(signup.name);
         toast("Registered successfully");
-        const token = response.data.Token;
-        localStorage.setItem("token", token);
-        navigate("/dashboard");
+        setValue(false);
       }
     } else {
       toast.error("Something went wrong");

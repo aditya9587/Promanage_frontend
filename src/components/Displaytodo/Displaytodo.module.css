@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+ .container{ 
+  font-family: "Poppins", serif;
+  height: fit-content;
+  width: 22vw;
+  padding: 10px 10px;
+  margin: 10px;
+  border-radius: 18px;
+  line-height: 2rem;
+}
+.serprate {
+  gap: 30px; /* Increase the gap if needed */
+
+}
+
+.mapDiv {
+  margin-bottom: 20px;
+  padding: 15px;
+  /* border: 1px solid #ccc; */
+  border-radius: 8px;
+  background-color:white;
+  position: relative;
+}
+
+
+.header{
+  display: flex;
+  height: fit-content;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+}
+
+.priotymsg{
+  font-size:xx-small;
+  margin-right: auto;
+}
+.todoTitle{
+  font-weight: 500;
+}
+
+.editIcon{
+  height: auto;
+  width: 20px;
+}
+
+.checkDiv{
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  justify-content: space-between;
+  margin: 10px 0px;
+  /* align-items: center; */
+}
+.dropdown{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: none;
+  height: 100px;
+  width: 100px;
+  align-items: start;
+  justify-content: space-evenly;
+  background-color: #FFFFFF;
+  position: absolute;
+  top:6vh; left:60%;
+  z-index: 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+.dropdown button{
+  border: none;
+  background: none;
+  font-family: "Poppins", serif;
+  font-weight: 500;
+}
+.dropdownbtn3{
+  color: red;
+}
+.insideCheckDiv{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.checkHeading{
+  font-weight: 500;
+}
+.checkDiv img{
+  height: 20px;
+  width: 20px;
+}
+
+.fotterDiv{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-family: "Poppins", serif;
+} 
+.dueDate{
+  font-size: small;
+  height: max-content;
+  padding: 5px   ;
+  border-radius: 18px;
+  background-color: beige;
+  margin-right: auto;
+}
+.fotterDiv button{
+  font-family: "Poppins", serif;
+  height: max-content;
+  width: 50px;
+  padding: 5px;
+  font-size: xx-small;
+  border: none;
+  margin-left: 5px;
+  border-radius: 18px;
+}
+
+.checklistItems {
+  margin-bottom: 10px;
+}
+
+.checklistItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+/* .todoContainer {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  width: fit-content;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.todoItem {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.todoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+
+.priorityDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ff5e5e;
+  margin-right: 5px;
+}
+
+.priorityText {
+  font-size:xx-small;
+  color: #888;
+  margin-right: auto;
+}
+
+.optionsIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.todoTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.checklist {
+  margin-bottom: 15px;
+}
+
+
+
+
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dueDateButton {
+  background-color: #ff5e5e;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.statusButtons {
+  display: flex;
+  gap: 5px;
+}
+
+.progressButton, .todoButton, .doneButton {
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 15px;
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  height: fit-content;
+}
+
+/* .progressButton {
+  background-color: #ffce5e;
+}
+
+.todoButton {
+  background-color: #ff5e5e;
+}
+
+.doneButton {
+  background-color: #5effa1;
+} */ 

@@ -1,12 +1,14 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import styles from "./AddTask.module.css";
-import { contextUser } from "../../context/UserContext";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { todoCreate } from "../../services/Userlogin";
 
-export default function AddTask() {
-  const { selectedDate, setSelectedDate } = useContext(contextUser);
+export default function AddTask({ onClose }) {
+  const modalref = useRef();
+
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [inputs, setInputs] = useState([]); //TO add checklist
   const [priorityValue, setPriority] = useState(null); //To add priority
@@ -29,18 +31,18 @@ export default function AddTask() {
     }));
   }, [inputs, priorityValue, selectedDate]);
 
-  // //TO SET_DATE
-  // function dateSet(e) {
-  //   setSelectedDate(e.target.value);
-  // }
-
+  const closeModal = (e) => {
+    if (modalref.current === e.target) {
+      onClose();
+    }
+  };
   //TO SAVE TODO TASK IN DATABASE VIA API
   async function handleTodoSave(e) {
     e.preventDefault();
-    if(inputs.length>0 &&  priorityValue.length > 0){
+    if (inputs.length > 0 && priorityValue.length > 0) {
       const response = await todoCreate(formData);
+      onClose();
     }
-   
   }
 
   //To set priority
@@ -80,7 +82,7 @@ export default function AddTask() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={modalref} onClick={closeModal}>
       <form className={styles.formClass}>
         <label htmlFor="">
           <p>
@@ -163,7 +165,10 @@ export default function AddTask() {
             className={styles.fbtn1}
           />
 
-          <button className={styles.fbtn2}> Cancel</button>
+          <button className={styles.fbtn2} onClick={onClose}>
+            {" "}
+            Cancel
+          </button>
           <button className={styles.fbtn3} onClick={handleTodoSave}>
             Save
           </button>
