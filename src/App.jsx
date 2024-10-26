@@ -4,6 +4,7 @@ import Register from "./pages/register/Register";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import UserContext from "./context/UserContext";
 import Displaytodo from "./components/Displaytodo/Displaytodo";
+import Setting from "./components/settings/Setting";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/test" element={<Displaytodo />} />
+          <Route path="/test" element={<Setting /> } />
         </Routes>
       </BrowserRouter>
     </UserContext>

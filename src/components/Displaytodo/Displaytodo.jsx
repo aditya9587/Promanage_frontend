@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import style from "./Displaytodo.module.css";
 
 export default function Displaytodo({ onStatusChange, tasks }) {
-  const [dropdown, setDropdown] = useState(null);
+  const dropdownRef = useRef(null);
+  const [dropdown, setDropdown] = useState(false);
   const [checklistVisibility, setChecklistVisibility] = useState({});
 
   const toggleChecklistVisibility = (todoId) => {
@@ -13,9 +14,14 @@ export default function Displaytodo({ onStatusChange, tasks }) {
     console.log(tasks);
   };
 
-  function showDropdown(index){
-    setDropdown(activeDropdown === index ? null : index)
+  function closeModal(e) {
+    if (dropdownRef.target === e.target) {
+      setDropdown(false);
+    }
   }
+  const showDropdown = () => {
+    setDropdown((prev) => !prev); // Toggle dropdown state
+  };
 
   return (
     <div className={style.container}>
@@ -30,14 +36,18 @@ export default function Displaytodo({ onStatusChange, tasks }) {
                   alt=""
                   className={style.editIcon}
                   onClick={showDropdown}
-                />{
-                  dropdown ? <div className={style.dropdown}>
-                  <button>EDIT</button>
-                  <button>SHARE</button>
-                  <button className={style.dropdownbtn3}>DELETE</button>
-                </div> : null
-                }
-                
+                />
+                {dropdown ? (
+                  <div
+                    className={style.dropdown}
+                    ref={dropdownRef}
+                    onClick={closeModal}
+                  >
+                    <button>EDIT</button>
+                    <button>SHARE</button>
+                    <button className={style.dropdownbtn3}>DELETE</button>
+                  </div>
+                ) : null}
               </div>
 
               <h3 className={style.todoTitle}>{item.title}</h3>

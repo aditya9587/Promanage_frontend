@@ -1,0 +1,33 @@
+.container{
+  font-family: "Open Sans", sans-serif;
+  height: 100vh;
+  margin-left: 25vw;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.coverDiv{
+  display: flex;
+}
+ul li span{
+  text-align: end;
+}
+
+ul li::marker{
+  color: #90C4CC;
+  font-size:x-large;
+  text-align: center;
+}
+.taskDiv{
+  background-color: #F9FCFF;
+  height: 50vh;
+  width: 30vw;
+  line-height: 50px;
+  font-weight: 400;
+  font-size: 18px;
+}
+.priorityDiv{
+  background-color: #F9FCFF;
+  height: 50vh;
+  width: 30vw;
+}

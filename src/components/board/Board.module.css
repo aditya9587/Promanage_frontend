@@ -1,0 +1,57 @@
+.mainDash {
+  display: flex;
+  height: 15vh;
+  width: 85vw;
+  padding: 10px 10px 10px 10px;
+  flex-direction: column;
+  gap: 10px;
+  position: fixed;
+  left: 15vw;
+}
+.mainDash1 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.mainDash2 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.todoGroup {
+  display: flex;
+  justify-content: space-evenly;
+  position: absolute;
+  top: 15vh;
+  left: 15vw;
+  gap: 5px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8daab9cc;
+}
+
+.insideGroup {
+  height: 80vh;
+  width: 25vw;
+  background-color: #eef2f5;
+  overflow-y: auto;
+  margin-left: 10px;
+  border-radius: 18px;
+  scrollbar-width: thin;
+  scrollbar-color: #8daab9cc;
+}
+
+.taskHeading img {
+  position: relative;
+  top: 5px;
+  left: 60%;
+  padding: 0px 5px;
+  cursor: pointer;
+}
+
+.taskHeading {
+  position: relative;
+  padding: 5px 0px 0px 10px;
+}

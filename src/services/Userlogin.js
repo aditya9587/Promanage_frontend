@@ -57,10 +57,14 @@ export const getTodos = () => {
 
 export const updateTaskStatus = async (mainID, newStatus) => {
   try {
+  const token = localStorage.getItem("token");
     const res = await axios.patch(
       `${import.meta.env.VITE_BASE_URL}/${mainID}/status`,
-      { status: newStatus }
-    );
+      { status: newStatus },{
+        headers: {
+          Authorization: `${token}`,
+        },
+  });
     console.log("Task status successfully updated");
   } catch (error) {
     console.error("Error updating task status in the backend:", error);

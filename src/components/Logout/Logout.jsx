@@ -15,7 +15,7 @@ export default function Logout({onClose}) {
   }
 
   return (
-    <div className={style.Container}  ref={modalRef} onClick={closeModal}>
+    <div className={style.Container}  ref={modalRef} onClick={closeModal} >
       <div className={style.insideLogout}>
       <h3 className={style.logoutHeading}>Are you sure you want to Logout?</h3>
       <button  onClick={removeToken} className={style.logoutBtn}>Yes, Logout</button>

@@ -1,11 +1,11 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./AddTask.module.css";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { todoCreate } from "../../services/Userlogin";
 
-export default function AddTask({ onClose }) {
+export default function AddTask({ onClose, onTaskAdd }) {
   const modalref = useRef();
 
   const [selectedDate, setSelectedDate] = useState(null);
@@ -41,6 +41,10 @@ export default function AddTask({ onClose }) {
     e.preventDefault();
     if (inputs.length > 0 && priorityValue.length > 0) {
       const response = await todoCreate(formData);
+      if(response && response.data.datamsg){
+        onTaskAdd(response.data.datamsg)
+      }
+      console.log(response)
       onClose();
     }
   }
@@ -85,9 +89,9 @@ export default function AddTask({ onClose }) {
     <div className={styles.container} ref={modalref} onClick={closeModal}>
       <form className={styles.formClass}>
         <label htmlFor="">
-          <p>
+          <h4>
             Title<span className={styles.starSpan}>*</span>
-          </p>
+          </h4>
           <input
             type="text"
             placeholder="Enter Title Task"
@@ -103,7 +107,7 @@ export default function AddTask({ onClose }) {
               type="button"
               onClick={() => handlePriorityChange("HIGH PRIORITY")}
             >
-              HIGH PRIORITY
+              <span className={styles.priorityClr1}></span> HIGH PRIORITY
             </button>
             <button
               type="button"
