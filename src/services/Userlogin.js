@@ -74,7 +74,7 @@ export const updateTaskStatus = async (mainID, newStatus) => {
 export const deleteTask = async (id) => {
   try {
     const res = await axios.delete(
-      `${import.meta.env.VITE_BASE_URL}/deleteTask/$(id)`
+      `${import.meta.env.VITE_BASE_URL}/deleteTask/${id}`
     )
     console.log("Task Sucessfully deleted");
   } catch (error) {

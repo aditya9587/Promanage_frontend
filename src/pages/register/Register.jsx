@@ -4,11 +4,15 @@ import styles from "./Register.module.css";
 import { userCreate, userLogin } from "../../services/Userlogin";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Register() {
   const navigate = useNavigate();
 
   const [value, setValue] = useState(true);
+  const [loginPassVisible, setLoginPassVisible] = useState(true)
+  const [passwordVisible, setPasswordVisible] = useState({
+    password: true,
+    confirmPassword: true,
+  });
   const [login, setLogin] = useState({
     email: "",
     password: "",
@@ -58,7 +62,15 @@ export default function Register() {
       },
     },
   };
-
+  function toggleLoginPassword(){
+    setLoginPassVisible(!loginPassVisible)
+  }
+  function togglePasswordVisible(field) {
+    setPasswordVisible((prevVisibility) => ({
+      ...prevVisibility,
+      [field]: !prevVisibility[field],
+    }));
+  }
   const validateSignup = () => {
     let isError = false;
 
@@ -92,7 +104,7 @@ export default function Register() {
         navigate("/dashboard");
       }
     } catch (error) {
-      toast.error("something went wrong");
+      toast.error("Invalid Email or password");
     }
   }
 
@@ -100,14 +112,20 @@ export default function Register() {
     e.preventDefault();
 
     if (validateSignup()) {
-      const response = await userCreate(signup);
-      if (response.status === 201) {
-        setUserName(signup.name);
-        toast("Registered successfully");
-        setValue(false);
+      try {
+        const response = await userCreate(signup);
+        console.log(response);
+        if (response.status === 201) {
+          toast("Registered successfully");
+          setValue(true);
+
+          setsignup({ name: "", email: "", password: "", confirmPassword: "" });
+        }
+      } catch (error) {
+        toast.error("Something went wrong");
       }
     } else {
-      toast.error("Something went wrong");
+      toast.error("Invalid Signup details");
     }
   }
 
@@ -123,24 +141,31 @@ export default function Register() {
           <div className={styles.login}>
             <h2>Login</h2>
             <form onSubmit={handleLogin} className={styles.submitForm}>
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={login.email}
-                onChange={handlechange1}
-                className={styles.emailIcon}
-                required
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={login.password}
-                onChange={handlechange1}
-                className={styles.passwordLock}
-                required
-              />
+              <div className={styles.inputBorder}>
+                <img src="/images/icon.png" alt="" />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={login.email}
+                  onChange={handlechange1}
+                  required
+                />
+              </div>
+
+              <div className={styles.inputBorder}>
+                <img src="/images/lock.png" alt="" />
+                <input
+                  type={loginPassVisible ? "text" :"password"}
+                  name="password"
+                  placeholder="Password"
+                  value={login.password}
+                  onChange={handlechange1}
+                  required
+                />
+                <img src={loginPassVisible ? "/images/view.png" : "/images/viewoff.png"} alt="" className={styles.passwordview} onClick={toggleLoginPassword}/>
+              </div>
+
               <button type="submit">Login</button>
             </form>
             <p>Have no account yet?</p>
@@ -164,43 +189,75 @@ export default function Register() {
           <div className={styles.login}>
             <h2>Register</h2>
             <form onSubmit={handleSignup} className={styles.submitForm}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={signup.name}
-                onChange={handlechange2}
-                className={styles.userIcon}
-              />
+              <div className={styles.inputBorder}>
+                <img src="/images/icon.png" alt="" />
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  value={signup.name}
+                  onChange={handlechange2}
+                />
+              </div>
+
               {errors.name && (
                 <p className={styles.errmsg}>{errorMessages.name.message}</p>
               )}
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={signup.email}
-                onChange={handlechange2}
-                className={styles.emailIcon}
-              />
+              <div className={styles.inputBorder}>
+                <img src="/images/Profile.png" alt="" />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={signup.email}
+                  onChange={handlechange2}
+                />
+              </div>
+
               {errors.email && <p>{errorMessages.email.message}</p>}
-              <input
-                type="text"
-                name="password"
-                placeholder="Password"
-                value={signup.password}
-                onChange={handlechange2}
-                className={styles.passwordLock}
-              />
+              <div className={styles.inputBorder}>
+                <img src="/images/lock.png" alt="" />
+                <input
+                  type={passwordVisible.password ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  value={signup.password}
+                  onChange={handlechange2}
+                />
+                <img
+                  src={
+                    passwordVisible.password
+                      ? "/images/view.png"
+                      : "/images/viewoff.png"
+                  }
+                  alt=""
+                  className={styles.passwordview}
+                  onClick={() => togglePasswordVisible("password")}
+                />
+              </div>
+
               {errors.password && <p>{errorMessages.password.message}</p>}
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                value={signup.confirmPassword}
-                onChange={handlechange2}
-                className={styles.passwordLock}
-              />
+              <div className={styles.inputBorder}>
+                <img src="/images/lock.png" alt="" />
+                <input
+                  type={passwordVisible.confirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  value={signup.confirmPassword}
+                  onChange={handlechange2}
+                />
+                <img
+                  src={
+                    passwordVisible.confirmPassword
+                      ? "/images/view.png"
+                      : "/images/viewoff.png"
+                  }
+                  alt=""
+                  className={styles.passwordview}
+                  onClick={() => togglePasswordVisible("confirmPassword")}
+                />
+              </div>
+
               {errors.confirmPassword && (
                 <p>{errorMessages.confirmPassword.message}</p>
               )}

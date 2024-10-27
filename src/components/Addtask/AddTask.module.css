@@ -42,14 +42,14 @@
 }
 
 
-input[type="text"] {
+ .inputTypeText {
   height: 30px;
   width: 80%;
   border-radius: 32px;
   padding-left: 20px;
   margin-left: 10px;
   border: 0.5px solid grey;
-}
+} 
 .addButton {
   width: 15%;
   border: none;

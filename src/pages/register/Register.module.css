@@ -29,29 +29,28 @@
   width: 40vw;
   padding: 2vw 5vw;
 }
-.submitForm{
-  width: 40vw;
-  padding: 2vw 5vw;
+
+
+.inputBorder{
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  border: 1px solid grey;
+  padding: 10px;
+  margin: 20px 0px;
+  border-radius: 18px;
+
 }
-.emailIcon{
-  background: url("/images/icon.png") no-repeat scroll 10px 10px;
-  background-size: 20px 20px;
-}
-.passwordLock{
-  background: url("/images/lock.png") no-repeat scroll 10px 10px;
-  background-size: 20px 20px;
-}
-.view{
-  background: url("/images/view.png") no-repeat scroll 10px 10px;
-  background-size: 20px 20px;
-  background-position: 100%;
-}
-.userIcon{
-  background: url("/images/Profile.png") no-repeat scroll 10px 10px;
-  background-size: 20px 20px;
+.inputBorder input {
+  border: none;
+  outline: none;
+  margin-left: 10px;
 }
 
-.login form input {
+.passwordview{
+  margin-left: auto;
+}
+/* .login form input {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
@@ -60,7 +59,8 @@
   padding-left:10%;
   border-radius: 30px;
   border: 1px solid grey;
-}
+} */
+
 .login button[type="submit"]{
   width: 100%;
   height: 40px;

@@ -41,10 +41,10 @@ export default function AddTask({ onClose, onTaskAdd }) {
     e.preventDefault();
     if (inputs.length > 0 && priorityValue.length > 0) {
       const response = await todoCreate(formData);
-      if(response && response.data.datamsg){
-        onTaskAdd(response.data.datamsg)
+      if (response && response.data.datamsg) {
+        onTaskAdd(response.data.datamsg);
       }
-      console.log(response)
+      console.log(response);
       onClose();
     }
   }
@@ -97,6 +97,7 @@ export default function AddTask({ onClose, onTaskAdd }) {
             placeholder="Enter Title Task"
             value={formData.title}
             onChange={(e) => setFormData({ title: e.target.value })}
+            className={styles.inputTypeText}
             required
           />
         </label>
@@ -126,7 +127,9 @@ export default function AddTask({ onClose, onTaskAdd }) {
 
         <label htmlFor="">
           Assign to
-          <input type="text" />
+            <input type="text"  
+            className={styles.inputTypeText}
+            />
         </label>
         <p>
           Checklist ({checklistCount()}/{inputs.length})
@@ -146,6 +149,7 @@ export default function AddTask({ onClose, onTaskAdd }) {
                 placeholder="Task to be done"
                 value={input.text}
                 onChange={(e) => handleInputChange(index, e)}
+                className={styles.inputTypeText}
                 required
               />
               {/* delete image */}
