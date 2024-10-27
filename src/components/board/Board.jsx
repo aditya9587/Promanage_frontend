@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import styles from "./Board.module.css";
 import Displaytodo from "../Displaytodo/Displaytodo";
-import { getTodos, updateTaskStatus } from "../../services/Userlogin";
+import {
+  deleteTask,
+  getTodos,
+  updateTaskStatus,
+} from "../../services/Userlogin";
 import AddTask from "../Addtask/AddTask";
+import { contextUser } from "../../context/UserContext";
 
 export default function Board() {
   const [currentDate, setCurrentDate] = useState("");
   const [todoModal, setTodoModal] = useState(false);
-  const [tasks, setTasks] = useState([]);
-
-  const collapseAllCard = () => {
-    //not working todo
-    setShowChecklist(false);
-  };
+  const {tasks, setTasks} = useContext(contextUser)
 
   // set Date
   useEffect(() => {
@@ -27,7 +27,6 @@ export default function Board() {
   useEffect(() => {
     async function fetchTask() {
       const response = await getTodos();
-      // console.log(response);
       setTasks(response.data.data);
     }
     fetchTask();
@@ -37,17 +36,26 @@ export default function Board() {
     const updatedTask = tasks.map((task) =>
       task._id === mainID ? { ...task, status: newStatus } : task
     );
-
     setTasks(updatedTask);
     await updateTaskStatus(mainID, newStatus);
   }
+  
+  const collapseAllCard = () => {
+    //not working todo
+    setShowChecklist(false);
+  };
 
   function showTodoModal() {
     setTodoModal(true);
   }
 
-  function handleTaskAdd (newTask){
-    setTasks((prevTask) => [...prevTask , newTask])
+  async function handleDeleteTask (id){
+    await deleteTask (id)
+    setTasks ((prevTasks)=> prevTasks.filter ((task) => task._id !== id));
+  }
+
+  function handleTaskAdd(newTask) {
+    setTasks((prevTask) => [...prevTask, newTask]);
   }
 
   return (
@@ -87,6 +95,8 @@ export default function Board() {
                     key={item._id}
                     tasks={[item]}
                     onStatusChange={handleStatusChange}
+                    onDeleteTask = {handleDeleteTask}
+
                   />
                 ))}
             </div>
@@ -111,6 +121,8 @@ export default function Board() {
                       key={item._id}
                       tasks={[item]}
                       onStatusChange={handleStatusChange}
+                      onDeleteTask = {handleDeleteTask}
+                     
                     />
                   ))}
               </div>
@@ -129,6 +141,8 @@ export default function Board() {
                     key={item._id}
                     tasks={[item]}
                     onStatusChange={handleStatusChange}
+                    onDeleteTask = {handleDeleteTask}
+
                   />
                 ))}
             </div>
@@ -146,13 +160,19 @@ export default function Board() {
                     key={item._id}
                     tasks={[item]}
                     onStatusChange={handleStatusChange}
+                    onDeleteTask = {handleDeleteTask}
                   />
                 ))}
             </div>
           </div>
         </div>
       </div>
-      {todoModal ? <AddTask onClose={() => setTodoModal(false)}  onTaskAdd={handleTaskAdd}/> : null}
+      {todoModal ? (
+        <AddTask
+          onClose={() => setTodoModal(false)}
+          onTaskAdd={handleTaskAdd}
+        />
+      ) : null}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 export const userCreate = (data) => {
   try {
@@ -57,14 +57,16 @@ export const getTodos = () => {
 
 export const updateTaskStatus = async (mainID, newStatus) => {
   try {
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const res = await axios.patch(
       `${import.meta.env.VITE_BASE_URL}/${mainID}/status`,
-      { status: newStatus },{
+      { status: newStatus },
+      {
         headers: {
           Authorization: `${token}`,
         },
-  });
+      }
+    );
     console.log("Task status successfully updated");
   } catch (error) {
     console.error("Error updating task status in the backend:", error);
@@ -73,11 +75,20 @@ export const updateTaskStatus = async (mainID, newStatus) => {
 
 export const deleteTask = async (id) => {
   try {
+    const token = localStorage.getItem("token");
     const res = await axios.delete(
-      `${import.meta.env.VITE_BASE_URL}/deleteTask/${id}`
-    )
+      `${import.meta.env.VITE_BASE_URL}/deleteTask/${id}`,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
     console.log("Task Sucessfully deleted");
   } catch (error) {
-    console.log("error deleting the task in the backend", error)
+    // console.log("error deleting the task in the backend", error);
+    if(isAxiosError){
+      console.log(isAxiosError)
+    }
   }
-}
+};

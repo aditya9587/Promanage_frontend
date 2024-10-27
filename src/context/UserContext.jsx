@@ -6,11 +6,14 @@ export const contextUser = createContext(null);
 export default function UserContext({ children }) {
 
   const [activeComponent, setActiveComponent] = useState("Board");
+
+  const [tasks, setTasks] = useState([]);
+
   
 
   return (
     <div>
-      <contextUser.Provider  value = {{activeComponent, setActiveComponent}}>
+      <contextUser.Provider  value = {{activeComponent, setActiveComponent, tasks, setTasks}}>
         {children}
       </contextUser.Provider>
     </div>

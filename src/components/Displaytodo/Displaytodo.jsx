@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from "react";
 import style from "./Displaytodo.module.css";
 
-export default function Displaytodo({ onStatusChange, tasks }) {
+export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
   const dropdownRef = useRef(null);
   const [dropdown, setDropdown] = useState(false);
   const [checklistVisibility, setChecklistVisibility] = useState({});
@@ -23,6 +23,10 @@ export default function Displaytodo({ onStatusChange, tasks }) {
     setDropdown((prev) => !prev); // Toggle dropdown state
   };
 
+  async function handleDeleteClick (id){
+    await onDeleteTask(id);
+    setDropdown(false)
+  }
   return (
     <div className={style.container}>
       <div className={style.serprate}>
@@ -45,7 +49,7 @@ export default function Displaytodo({ onStatusChange, tasks }) {
                   >
                     <button>EDIT</button>
                     <button>SHARE</button>
-                    <button className={style.dropdownbtn3}>DELETE</button>
+                    <button className={style.dropdownbtn3} onClick={()=> handleDeleteClick(item._id)}>DELETE</button>
                   </div>
                 ) : null}
               </div>
