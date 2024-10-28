@@ -46,13 +46,20 @@ export const todoCreate = (data) => {
 };
 
 export const getTodos = () => {
-  const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
   const res = axios.get(`${import.meta.env.VITE_BASE_URL}/tasks/`, {
     headers: {
       Authorization: `${token}`,
     },
   });
   return res;
+  } catch (error) {
+    if(isAxiosError){
+      console.log(isAxiosError)
+    }
+  }
+  
 };
 
 export const updateTaskStatus = async (mainID, newStatus) => {
@@ -86,9 +93,49 @@ export const deleteTask = async (id) => {
     );
     console.log("Task Sucessfully deleted");
   } catch (error) {
-    // console.log("error deleting the task in the backend", error);
+    console.log("error deleting the task in the backend", error);
+    if (isAxiosError) {
+      console.log(isAxiosError);
+    }
+  }
+};
+
+export const editTask = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.patch(
+      `${import.meta.env.VITE_BASE_URL}/editTask/${id}`,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
+    console.log("Task Sucessfully updated");
+  } catch (error) {
+    console.log("error deleting the task in the backend", error);
+    if (isAxiosError) {
+      console.log(isAxiosError);
+    }
+  }
+};
+
+
+//settings tab Route
+
+export const updateUser = (data) =>{
+  try {
+    const token = localStorage.getItem("token")
+    const res = axios.put(`${import.meta.env.VITE_BASE_URL}/updateUser`,data,{
+      headers:{
+         Authorization : `${token}`
+      },
+    })
+    return res;
+  } catch (error) {
     if(isAxiosError){
       console.log(isAxiosError)
     }
   }
-};
+
+}

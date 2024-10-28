@@ -3,9 +3,12 @@ import { toast } from "react-toastify";
 import styles from "./Register.module.css";
 import { userCreate, userLogin } from "../../services/Userlogin";
 import { useNavigate } from "react-router-dom";
+import { contextUser } from "../../context/UserContext";
+import { jwtDecode } from "jwt-decode";
 
 export default function Register() {
   const navigate = useNavigate();
+  const {signup, setsignup} = useContext(contextUser)
 
   const [value, setValue] = useState(true);
   const [loginPassVisible, setLoginPassVisible] = useState(true)
@@ -16,13 +19,6 @@ export default function Register() {
   const [login, setLogin] = useState({
     email: "",
     password: "",
-  });
-
-  const [signup, setsignup] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
   });
 
   const [errors, setError] = useState({
@@ -98,8 +94,11 @@ export default function Register() {
       const response = await userLogin(login);
       if (response.status === 200) {
         const token = response.data.Token;
-        console.log(token);
+        console.log(response)
+        const userPayloadData = jwtDecode(token)
         localStorage.setItem("token", token);
+        localStorage.setItem("name", userPayloadData.name)
+        localStorage.setItem("email", userPayloadData.email)
         toast("login successfully");
         navigate("/dashboard");
       }

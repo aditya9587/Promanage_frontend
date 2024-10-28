@@ -3,6 +3,7 @@ import styles from "./Board.module.css";
 import Displaytodo from "../Displaytodo/Displaytodo";
 import {
   deleteTask,
+  editTask,
   getTodos,
   updateTaskStatus,
 } from "../../services/Userlogin";
@@ -31,6 +32,7 @@ export default function Board() {
     }
     fetchTask();
   }, []);
+  const boardname = localStorage.getItem("name")
 
   async function handleStatusChange(mainID, newStatus) {
     const updatedTask = tasks.map((task) =>
@@ -49,13 +51,18 @@ export default function Board() {
     setTodoModal(true);
   }
 
+  function handleTaskAdd(newTask) {
+    setTasks((prevTask) => [...prevTask, newTask]);
+  }
+
+  async function handleEditTask(id, updatedTask){
+    await editTask(id);
+    
+  }
+  
   async function handleDeleteTask (id){
     await deleteTask (id)
     setTasks ((prevTasks)=> prevTasks.filter ((task) => task._id !== id));
-  }
-
-  function handleTaskAdd(newTask) {
-    setTasks((prevTask) => [...prevTask, newTask]);
   }
 
   return (
@@ -63,7 +70,7 @@ export default function Board() {
       <div className={styles.rightSide}>
         <div className={styles.mainDash}>
           <div className={styles.mainDash1}>
-            <h3>Welcome! Name </h3>
+            <h3>Welcome! {boardname} </h3>
             <div>{currentDate}</div>
           </div>
 
