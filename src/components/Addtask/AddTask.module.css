@@ -1,20 +1,13 @@
 .container {
+  inset: 0;
   display: flex;
   height: 100vh;
   width: 100vw;
   justify-content: center;
   align-items: center;
-  inset: 0;
   position: fixed;
   background-color: rgba(0, 0, 0, 0.4);
-}
-
-.priorityDiv label button:hover {
-  background-color: #eeecec;
-}
-
-.priorityDiv label button:focus {
-  background-color: #eeecec;
+  z-index: 1000;
 }
 
 .formClass {
@@ -25,44 +18,69 @@
   gap: 10px;
   background-color: white;
   padding: 15px;
-
   border-radius: 18px;
 }
+
 .starSpan {
   color: red;
 }
-.priorityDiv button {
-  background: none;
-  border: 0.5px solid #e2e2e2;
-  margin-left: 10px;
-  height: 30px;
-  width: fit-content;
-  padding: 0 20px;
-  border-radius: 32px;
-}
 
-
- .inputTypeText {
+.inputTypeText {
   height: 30px;
   width: 80%;
-  border-radius: 32px;
-  padding-left: 20px;
+  border-radius: 4px;
+  padding-left: 5px;
   margin-left: 10px;
   border: 0.5px solid grey;
-} 
-.addButton {
-  width: 15%;
-  border: none;
-  background-color: transparent;
+  font-size: small;
 }
 
-input[type="checkbox"] {
-  height: 20px;
-  width: 15px;
-  border-radius: 10px;
-  padding: 5px;
-  background: #17a2b8;
+.priorityDiv {
+  display: flex;
+  align-items: center;
 }
+.priorityOptions label {
+  border: solid 0.1px lightgray;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 0.9rem;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  color: #767575;
+}
+
+.priorityOptions label input {
+  display: none;
+  /* opacity: 0; */
+}
+
+label:has(input[type="radio"]:checked) {
+  background-color: #eeecec;
+}
+.priorityOptions {
+  display: flex;
+}
+
+.bullet {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.high {
+  background-color: #ff2473;
+}
+
+.moderate {
+  background-color: #18b0ff;
+}
+
+.low {
+  background-color: #63c05b;
+}
+
 .checklistUperbox {
   overflow-y: scroll;
   height: 25vh;
@@ -90,8 +108,8 @@ input[type="checkbox"] {
   border: none;
   outline: none;
   box-shadow: none;
-  font-weight: 500;
-  font-size: large;
+  font-weight: 400;
+  font-size: medium;
 }
 
 .fotterbtn {
@@ -106,7 +124,9 @@ input[type="checkbox"] {
 .fbtn1 {
   border: 0.5px solid #e2e2e2;
   background-color: white;
-  padding: 20px;
+  padding:  5px;
+  height: 30px;
+  border-radius: 14px;
 }
 
 .fbtn2 {
@@ -119,4 +139,10 @@ input[type="checkbox"] {
   background-color: #17a2b8;
   border: none;
   color: white;
+}
+
+.addButton {
+  width: 15%;
+  border: none;
+  background-color: transparent;
 }

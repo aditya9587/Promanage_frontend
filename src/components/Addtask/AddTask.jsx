@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./AddTask.module.css";
+import { toast } from "react-toastify";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,15 +12,16 @@ export default function AddTask({ onClose, onTaskAdd }) {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [inputs, setInputs] = useState([]); //TO add checklist
-  const [priorityValue, setPriority] = useState(null); //To add priority
+  const [priorityValue, setPriority] = useState(); //To add priority
 
   // send data to api
   const [formData, setFormData] = useState({
     title: "",
-    priority: priorityValue,
-    checklist: inputs,
-    dueDate: selectedDate,
+    priority: "",
+    checklist: [],
+    dueDate: null,
   });
+
 
   //TO SET FORM DATA
   useEffect(() => {
@@ -39,19 +41,34 @@ export default function AddTask({ onClose, onTaskAdd }) {
   //TO SAVE TODO TASK IN DATABASE VIA API
   async function handleTodoSave(e) {
     e.preventDefault();
-    if (inputs.length > 0 && priorityValue.length > 0) {
+    if (!formData.title.trim()) {
+      toast.error("Please enter a task title.");
+      return;
+    }
+  
+    // Check if priority is selected
+    if (!formData.priority) {
+      toast.error("Please select a priority level.");
+      return;
+    }
+
+    if (formData.checklist.length === 0) {
+      toast.error("Please add at least one checklist item.");
+      return;
+    }
+
+      const emptyChecklistItems = formData.checklist.some((item) => !item.text.trim());
+      if (emptyChecklistItems) {
+        toast.error("Please fill out all checklist items.");
+        return;
+      }
       const response = await todoCreate(formData);
+      console.log(priorityValue);
       if (response && response.data.datamsg) {
         onTaskAdd(response.data.datamsg);
       }
-      console.log(response);
       onClose();
-    }
-  }
-
-  //To set priority
-  function handlePriorityChange(priorityLevel) {
-    setPriority(priorityLevel);
+    
   }
 
   //CREATING CHECKIST COUNT
@@ -89,47 +106,62 @@ export default function AddTask({ onClose, onTaskAdd }) {
     <div className={styles.container} ref={modalref} onClick={closeModal}>
       <form className={styles.formClass}>
         <label htmlFor="">
-          <h4>
+          <p>
             Title<span className={styles.starSpan}>*</span>
-          </h4>
+          </p>
           <input
             type="text"
             placeholder="Enter Title Task"
             value={formData.title}
-            onChange={(e) => setFormData({ title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
             className={styles.inputTypeText}
             required
           />
         </label>
         <div className={styles.priorityDiv}>
-          <label htmlFor="">
-            Select Priority <span className={styles.starSpan}>*</span>
-            <button
-              type="button"
-              onClick={() => handlePriorityChange("HIGH PRIORITY")}
-            >
-              <span className={styles.priorityClr1}></span> HIGH PRIORITY
-            </button>
-            <button
-              type="button"
-              onClick={() => handlePriorityChange("MODERATE PRIORITY")}
-            >
-              MODERATE PRIORITY
-            </button>
-            <button
-              type="button"
-              onClick={() => handlePriorityChange("LOW PRIORITY")}
-            >
-              LOW PRIORITY
-            </button>
-          </label>
+          Select Priority <span className={styles.starSpan}>*</span>
+          <div className={styles.priorityOptions}>
+            <label>
+              <input
+                type="radio"
+                name="priority"
+                value="HIGH PRIORITY"
+                checked={priorityValue === "HIGH PRIORITY"}
+                onChange={(e) => setPriority(e.target.value)}
+              />
+              <span className={`${styles.bullet} ${styles.high}`}></span> High
+              priority
+            </label>
+            <label >
+              <input
+                type="radio"
+                name="priority"
+                value="MODERATE PRIORITY"
+                checked={priorityValue === "MODERATE PRIORITY"}
+                onChange={(e) => setPriority(e.target.value)}
+              />
+              <span className={`${styles.bullet} ${styles.moderate}`}></span>{" "}
+              Moderate priority
+            </label>
+            <label >
+              <input
+                type="radio"
+                name="priority"
+                value="LOW PRIORITY"
+                checked={priorityValue === "LOW PRIORITY"}
+                onChange={(e) => setPriority(e.target.value)}
+              />
+              <span className={`${styles.bullet} ${styles.low}`}></span> Low
+              priority
+            </label>
+          </div>
         </div>
 
         <label htmlFor="">
           Assign to
-            <input type="text"  
-            className={styles.inputTypeText}
-            />
+          <input type="text" className={styles.inputTypeText} />
         </label>
         <p>
           Checklist ({checklistCount()}/{inputs.length})

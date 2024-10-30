@@ -1,12 +1,9 @@
 import React, { useState, useContext } from "react";
 import styles from "./Sidebar.module.css";
-import { contextUser } from "../../context/UserContext";
 import Logout from "../Logout/Logout";
 
-function Sidebar() {
+function Sidebar({setValue}) {
   const [logoutModal, setlogoutModal] = useState(false);
-
-  const { setActiveComponent } = useContext(contextUser);
 
   const logout = () => {
     setlogoutModal(true);
@@ -15,25 +12,25 @@ function Sidebar() {
     <div className={styles.userControl}>
         <div className={styles.sideDashboard}>
           <img src="/images/codesandbox.png" alt="" />
-          <h4>Pro Manage</h4>
+          <h3>Pro Manage</h3>
         </div>
         <div
           className={styles.sideDashboard}
-          onClick={() => setActiveComponent("Board")}
+          onClick={() =>setValue("Board")}
         >
           <img src="/images/layout.png" alt="" />
           <p>Board</p>
         </div>
         <div
           className={styles.sideDashboard}
-          onClick={() => setActiveComponent("Analytics")}
+          onClick={() => setValue("Analytics")}
         >
           <img src="/images/database.png" alt="" />
           <p>Analytics</p>
         </div>
         <div
           className={styles.sideDashboard}
-          onClick={() => setActiveComponent("Setting")}
+          onClick={() => setValue("Setting")}
         >
           <img src="/images/settings.png" alt="" />
           <p>Settings</p>

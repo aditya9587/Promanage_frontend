@@ -3,13 +3,10 @@ import style from "./Setting.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { contextUser } from "../../context/UserContext";
 import { updateUser } from "../../services/Userlogin";
 import { useNavigate } from "react-router-dom";
 
 function Setting() {
-  const { signup, setSignup } = useContext(contextUser);
-
   const navigate = useNavigate();
 
   const [passwordVisibility, setPasswordVisibility] = useState({
@@ -94,7 +91,7 @@ function Setting() {
     }));
   }
   return (
-    <div className={style.container}>
+    <div className={style.sidebarContainer}>
       <h3>Settings</h3>
       <form onSubmit={handleSubmit}>
         <div className={style.inputDiv}>

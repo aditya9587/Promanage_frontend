@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import styles from "./Dashboard.module.css";
 
 import Sidebar from "../../components/SideBar/Sidebar";
 import Board from "../../components/board/Board";
 import Analytics from "../../components/Analytics/Analytics";
 import Setting from "../../components/settings/Setting";
-import { contextUser } from "../../context/UserContext";
+import AddTask from "../../components/Addtask/AddTask";
+import Deletepopup from "../../components/deletepopup/Deletepopup";
 
 function Dashboard() {
-  const { activeComponent } = useContext(contextUser);
+  const [activeComponent, setActiveComponent] = useState("Board");
+
+  function activeComponentValue(value){
+    setActiveComponent(value)
+  }
 
   const renderComponent = () => {
     switch (activeComponent) {
@@ -25,8 +30,10 @@ function Dashboard() {
 
   return (
     <div className={styles.mainContainer}>
-      <Sidebar />
+      <Sidebar setValue={activeComponentValue}/>
+     
       <div className={styles.rightContainer}>{renderComponent()}</div>
+      {/* {deletePopup ? <Deletepopup/> : null}  */}
     </div>
   );
 }

@@ -4,14 +4,18 @@ import style from "./Displaytodo.module.css";
 export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
   const dropdownRef = useRef(null);
   const [dropdown, setDropdown] = useState(false);
-  const [checklistVisibility, setChecklistVisibility] = useState({});
+  const [checklistVisibility, setChecklistVisibility] = useState({
+    todo:false,
+    backlog:false,
+    inProgress:false,
+    done:false,
+  });
 
   const toggleChecklistVisibility = (todoId) => {
     setChecklistVisibility((prevState) => ({
       ...prevState,
       [todoId]: !prevState[todoId], // Toggle visibility for the specific todo
     }));
-    console.log(tasks);
   };
 
   function closeModal(e) {
@@ -31,10 +35,10 @@ export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
     <div className={style.container}>
       <div className={style.serprate}>
         {Array.isArray(tasks) && tasks.length > 0 ? (
-          tasks.map((item) => (
-            <div key={item._id} className={style.mapDiv}>
+          tasks.map((task) => (
+            <div key={task._id} className={style.mapDiv}>
               <div className={style.header}>
-                <p className={style.priotymsg}>{item.priority} </p>
+                <p className={style.priotymsg}>{task.priority} </p>
                 <img
                   src="/images/option.png"
                   alt=""
@@ -49,34 +53,35 @@ export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
                   >
                     <button>EDIT</button>
                     <button>SHARE</button>
-                    <button className={style.dropdownbtn3} onClick={()=> handleDeleteClick(item._id)}>DELETE</button>
+                    <button className={style.dropdownbtn3} onClick={()=> handleDeleteClick(task._id)}>DELETE</button>
                   </div>
+                
                 ) : null}
               </div>
 
-              <h3 className={style.todoTitle}>{item.title}</h3>
+              <h3 className={style.todoTitle}>{task.title}</h3>
 
               <div className={style.checkDiv}>
                 <div className={style.insideCheckDiv}>
                   <p className={style.checkHeading}>
                     Checklist (
-                    {item.checklist.filter((check) => check.checked).length}/
-                    {item.checklist.length})
+                    {task.checklist.filter((check) => check.checked).length}/
+                    {task.checklist.length})
                   </p>
                   <img
                     src={
-                      checklistVisibility[item._id]
+                      checklistVisibility[task._id]
                         ? "/images/Arrow.png"
                         : "/images/Arrow_Down.png"
                     }
                     alt="toggle arrow"
-                    onClick={() => toggleChecklistVisibility(item._id)}
+                    onClick={() => toggleChecklistVisibility(task._id)}
                   />
                 </div>
 
                 <div className={style.checklistItems}>
-                  {checklistVisibility[item._id]
-                    ? item.checklist.map((checkItem) => (
+                  {checklistVisibility[task._id]
+                    ? task.checklist.map((checkItem) => (
                         <div
                           key={checkItem._id}
                           className={style.checklistItem}
@@ -94,36 +99,36 @@ export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
               </div>
 
               <div className={style.fotterDiv}>
-                <span className={style.dueDate} key={item._id}>
-                  {item.dueDate
-                    ? new Date(item.dueDate).toLocaleDateString("en-US", {
+                <span className={style.dueDate} key={task._id}>
+                  {task.dueDate
+                    ? new Date(task.dueDate).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                       })
                     : null}{" "}
                 </span>
-                {item.status !== "backlog" && (
-                  <button onClick={() => onStatusChange(item._id, "backlog")}>
+                {task.status !== "backlog" && (
+                  <button onClick={() => onStatusChange(task._id, "backlog")}>
                     Backlog
                   </button>
                 )}
 
-                {item.status !== "todo" && (
-                  <button onClick={() => onStatusChange(item._id, "todo")}>
+                {task.status !== "todo" && (
+                  <button onClick={() => onStatusChange(task._id, "todo")}>
                     To do
                   </button>
                 )}
 
-                {item.status !== "inProgress" && (
+                {task.status !== "inProgress" && (
                   <button
-                    onClick={() => onStatusChange(item._id, "inProgress")}
+                    onClick={() => onStatusChange(task._id, "inProgress")}
                   >
                     Progress
                   </button>
                 )}
 
-                {item.status !== "done" && (
-                  <button onClick={() => onStatusChange(item._id, "done")}>
+                {task.status !== "done" && (
+                  <button onClick={() => onStatusChange(task._id, "done")}>
                     Done
                   </button>
                 )}

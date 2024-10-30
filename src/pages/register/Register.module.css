@@ -37,7 +37,7 @@
   height: 50px;
   border: 1px solid grey;
   padding: 10px;
-  margin: 20px 0px;
+  margin: 10px 0px;
   border-radius: 18px;
 
 }
@@ -45,21 +45,13 @@
   border: none;
   outline: none;
   margin-left: 10px;
+  width: 100%;
 }
 
 .passwordview{
   margin-left: auto;
 }
-/* .login form input {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  width: 100%;
-  height: 40px;
-  padding-left:10%;
-  border-radius: 30px;
-  border: 1px solid grey;
-} */
+
 
 .login button[type="submit"]{
   width: 100%;
@@ -70,8 +62,14 @@
   border: none;
   font-size: medium;
 }
-.errmsg{
+.displayLoginError{
   color:red;
+  height: 30px;
+  font-size: small;
+}
+.displayError{
+  color:red;
+  height: 20px;
 }
 .redirectbtn{
   width: 75%;
@@ -83,7 +81,4 @@
   color: #17A2B8;
   border:1px solid #17A2B8; 
 }
-.login p{
-  color: #828282;
-  font-weight: 400;
-}
+

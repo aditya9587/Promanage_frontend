@@ -2,11 +2,12 @@
   display: flex;
   height: 15vh;
   width: 85vw;
-  padding: 10px 10px 10px 10px;
+  padding: 10px 20px;
   flex-direction: column;
   gap: 10px;
   position: fixed;
   left: 15vw;
+  z-index: 1;
 }
 .mainDash1 {
   display: flex;
@@ -20,6 +21,7 @@
 }
 
 .todoGroup {
+  height: 80vh;
   display: flex;
   justify-content: space-evenly;
   position: absolute;
@@ -41,6 +43,7 @@
   border-radius: 18px;
   scrollbar-width: thin;
   scrollbar-color: #8daab9cc;
+  overflow-x: hidden;
 }
 
 .taskHeading img {
@@ -54,4 +57,17 @@
 .taskHeading {
   position: relative;
   padding: 5px 0px 0px 10px;
+}
+
+.filterTask {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  position: absolute;
+  left: 88%;
+  top: 80%;
+  height: 100px;
+  width: 120px;
+  padding: 10px;
+  cursor: pointer;
 }

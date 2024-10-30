@@ -1,19 +1,19 @@
-import React, { useState, useEffect ,useContext} from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Board.module.css";
 import Displaytodo from "../Displaytodo/Displaytodo";
 import {
   deleteTask,
-  editTask,
   getTodos,
   updateTaskStatus,
 } from "../../services/Userlogin";
 import AddTask from "../Addtask/AddTask";
-import { contextUser } from "../../context/UserContext";
 
 export default function Board() {
   const [currentDate, setCurrentDate] = useState("");
   const [todoModal, setTodoModal] = useState(false);
-  const {tasks, setTasks} = useContext(contextUser)
+  const [tasks, setTasks] = useState([]);
+  const [filterTask, setFilterTask] = useState(false);
+  const [filterTaskValue, setFilterTaskValue] = useState("ALL");
 
   // set Date
   useEffect(() => {
@@ -27,13 +27,14 @@ export default function Board() {
 
   useEffect(() => {
     async function fetchTask() {
-      const response = await getTodos();
-      setTasks(response.data.data);
+      const response = await getTodos(); // To fetch Task
+      setTasks(response.data.data); //to set task
     }
     fetchTask();
-  }, []);
-  const boardname = localStorage.getItem("name")
+  }, [setTasks]);
+  const boardname = localStorage.getItem("name");
 
+  // TO chnge the Status of the task
   async function handleStatusChange(mainID, newStatus) {
     const updatedTask = tasks.map((task) =>
       task._id === mainID ? { ...task, status: newStatus } : task
@@ -41,28 +42,51 @@ export default function Board() {
     setTasks(updatedTask);
     await updateTaskStatus(mainID, newStatus);
   }
-  
-  const collapseAllCard = () => {
-    //not working todo
-    setShowChecklist(false);
-  };
 
-  function showTodoModal() {
-    setTodoModal(true);
-  }
-
+  // to set the added task
   function handleTaskAdd(newTask) {
     setTasks((prevTask) => [...prevTask, newTask]);
   }
 
-  async function handleEditTask(id, updatedTask){
-    await editTask(id);
-    
+  // to delete the particular task
+  async function handleDeleteTask(id) {
+    await deleteTask(id);
+    setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
   }
-  
-  async function handleDeleteTask (id){
-    await deleteTask (id)
-    setTasks ((prevTasks)=> prevTasks.filter ((task) => task._id !== id));
+
+  function filterTasksByDate() {
+    const today = new Date();
+    switch (filterTaskValue) {
+      case "Today":
+        return tasks.filter((task) => {
+          const taskDate = new Date(task.dueDate);
+          return taskDate.toDateString() === today.toDateString();
+        });
+      case "This Week":
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay());
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        return tasks.filter((task) => {
+          const taskDate = new Date(task.dueDate);
+          return taskDate >= startOfWeek && taskDate <= endOfWeek;
+        });
+      case "This Month":
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const endOfMonth = new Date(
+          today.getFullYear(),
+          today.getMonth() + 1,
+          0
+        );
+        return tasks.filter((task) => {
+          const taskDate = new Date(task.dueDate);
+          return taskDate >= startOfMonth && taskDate <= endOfMonth;
+        });
+
+      case "All":
+      default:
+        return tasks;
+    }
   }
 
   return (
@@ -80,98 +104,76 @@ export default function Board() {
               {/* <p>add people</p> */}
             </div>
 
-            <select>
-              <option value="week">This week</option>
-              <option value="month">This month</option>
-              <option value="year">This year</option>
-            </select>
+            <p onClick={() => setFilterTask(!filterTask)}>
+              {filterTaskValue} <img src="/images/filterArrow.png" alt="" />
+            </p>
+            {filterTask ? (
+              <div className={styles.filterTask}>
+                <p
+                  onClick={() => {
+                    setFilterTaskValue("Today");
+                    setFilterTask(!filterTask);
+                  }}
+                >
+                  Today
+                </p>
+                <p
+                  onClick={() => {
+                    setFilterTaskValue("This Week");
+                    setFilterTask(!filterTask);
+                  }}
+                >
+                  This Week
+                </p>
+                <p
+                  onClick={() => {
+                    setFilterTaskValue("This Month");
+                    setFilterTask(!filterTask);
+                  }}
+                >
+                  This Month
+                </p>
+                <p
+                  onClick={() => {
+                    setFilterTaskValue("All");
+                    setFilterTask(!filterTask);
+                  }}
+                >
+                  {" "}
+                  All
+                </p>
+              </div>
+            ) : null}
           </div>
         </div>
 
         <div className={styles.todoGroup}>
-          <div className={styles.insideGroup}>
-            <div className={styles.taskHeading}>
-              <span>backlog</span>
-              <img src="/images/collapse.png" alt="" />
-            </div>
-            <div>
-              {tasks
-                .filter((item) => item.status === "backlog")
-                .map((item) => (
-                  <Displaytodo
-                    key={item._id}
-                    tasks={[item]}
-                    onStatusChange={handleStatusChange}
-                    onDeleteTask = {handleDeleteTask}
-
-                  />
-                ))}
-            </div>
-          </div>
-
-          <div className={styles.insideGroup}>
-            <div className={styles.inside1}>
+          {["backlog", "todo", "inProgress", "done"].map((status) => (
+            <div key={status} className={styles.insideGroup}>
               <div className={styles.taskHeading}>
-                <span>To do</span>
-                <img src="/images/add.png" alt="" onClick={showTodoModal} />
-                <img
-                  src="/images/collapse.png"
-                  alt=""
-                  onClick={collapseAllCard}
-                />
+                <span>{status}</span>
+                {tasks.filter((task) => task.status == "todo") ? (
+                  <img
+                    src="/images/add.png"
+                    onClick={() => setTodoModal(!todoModal)}
+                  />
+                ) : null}
+                <img src="/images/collapse.png" alt="" />
               </div>
               <div>
-                {tasks
-                  .filter((item) => item.status === "todo")
-                  .map((item) => (
+                {filterTasksByDate()
+                  .filter((task) => task.status === status)
+                  .map((task) => (
                     <Displaytodo
-                      key={item._id}
-                      tasks={[item]}
+                      key={task._id}
+                      tasks={[task]}
                       onStatusChange={handleStatusChange}
-                      onDeleteTask = {handleDeleteTask}
-                     
+                      onDeleteTask={handleDeleteTask}
                     />
                   ))}
               </div>
             </div>
-          </div>
-          <div className={styles.insideGroup}>
-            <div className={styles.taskHeading}>
-              <span>In progress</span>
-              <img src="/images/collapse.png" alt="" />
-            </div>
-            <div>
-              {tasks
-                .filter((item) => item.status === "inProgress")
-                .map((item) => (
-                  <Displaytodo
-                    key={item._id}
-                    tasks={[item]}
-                    onStatusChange={handleStatusChange}
-                    onDeleteTask = {handleDeleteTask}
-
-                  />
-                ))}
-            </div>
-          </div>
-          <div className={styles.insideGroup}>
-            <div className={styles.taskHeading}>
-              <span>Done</span>
-              <img src="/images/collapse.png" alt="" />
-            </div>
-            <div>
-              {tasks
-                .filter((item) => item.status === "done")
-                .map((item) => (
-                  <Displaytodo
-                    key={item._id}
-                    tasks={[item]}
-                    onStatusChange={handleStatusChange}
-                    onDeleteTask = {handleDeleteTask}
-                  />
-                ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       {todoModal ? (

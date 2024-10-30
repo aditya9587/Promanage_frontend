@@ -1,0 +1,42 @@
+
+.parentDeletePopup{
+  inset: 0;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ height: 100vh;
+ width: 100vw;
+ z-index: 1;
+ background-color: rgba(0, 0, 0, 0.5);
+}
+.deleteTaskPopup{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  width: 25vw;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 18px;
+
+}
+
+.deleteBtn{
+  width: 100%;
+  height: 40px;
+  border: none;
+  margin-top: 20px;
+  border-radius: 18px;
+  background-color: #17A2B8;
+  color: white;
+}
+.cancelBtn{
+  width: 100%;
+  height: 40px;
+
+  border-radius: 18px;
+  border: 1px solid red;
+  color: red;
+}

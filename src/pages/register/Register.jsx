@@ -8,13 +8,18 @@ import { jwtDecode } from "jwt-decode";
 
 export default function Register() {
   const navigate = useNavigate();
-  const {signup, setsignup} = useContext(contextUser)
+  const [signup, setsignup] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const [value, setValue] = useState(true);
-  const [loginPassVisible, setLoginPassVisible] = useState(true)
+  const [loginPassVisible, setLoginPassVisible] = useState(false)
   const [passwordVisible, setPasswordVisible] = useState({
-    password: true,
-    confirmPassword: true,
+    password: false,
+    confirmPassword: false,
   });
   const [login, setLogin] = useState({
     email: "",
@@ -28,10 +33,32 @@ export default function Register() {
     confirmPassword: false,
   });
 
+  const [loginError, setLoginError] = useState({
+    email:false,
+    password:false,
+  })
+    
+    const loginErrorMsg ={
+      email:{
+        message:"Email is required and must contain @ and be longer than 3 characters",
+        isValid : login.email.includes("@") && login.email.length > 3,
+        onError : () => {
+          setLoginError((loginError) => ({...loginError, email:true}))
+        }
+      },
+      password :{
+        message:"passord must have at least 8 letters",
+        isValid : login.password.length >=  8,
+        onError : () => {
+          setLoginError((loginError)=> ({ ...loginError, password:true}))
+        }
+      },
+    }
+
   const errorMessages = {
     name: {
       message: "Name is required",
-      isValid: signup.name.length > 0,
+      isValid: signup.name.length > 1,
       onError: () => {
         setError((error) => ({ ...error, name: true }));
       },
@@ -44,8 +71,8 @@ export default function Register() {
       },
     },
     password: {
-      message: "Password is required",
-      isValid: signup.password.length > 0,
+      message: "Password length must at least 8",
+      isValid: signup.password.length > 8,
       onError: () => {
         setError((error) => ({ ...error, password: true }));
       },
@@ -58,6 +85,7 @@ export default function Register() {
       },
     },
   };
+
   function toggleLoginPassword(){
     setLoginPassVisible(!loginPassVisible)
   }
@@ -79,8 +107,21 @@ export default function Register() {
     return !isError;
   };
 
+  const validateLogin = () => {
+    let isError = false;
+
+    Object.keys(loginErrorMsg).forEach((key) => {
+      if(!loginErrorMsg[key].isValid){
+        isError = true ;
+        loginErrorMsg[key].onError();
+      }
+    })
+    return !isError;
+  }
+
   const handlechange1 = (e) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
+    setLoginError((loginError) => ({...loginError , [e.target.name]:false}))
   };
 
   const handlechange2 = (e) => {
@@ -90,7 +131,9 @@ export default function Register() {
 
   async function handleLogin(e) {
     e.preventDefault();
+    
     try {
+      if(validateLogin()){
       const response = await userLogin(login);
       if (response.status === 200) {
         const token = response.data.Token;
@@ -99,12 +142,16 @@ export default function Register() {
         localStorage.setItem("token", token);
         localStorage.setItem("name", userPayloadData.name)
         localStorage.setItem("email", userPayloadData.email)
-        toast("login successfully");
+        toast.success("login successfully");
         navigate("/dashboard");
       }
+    }
     } catch (error) {
       toast.error("Invalid Email or password");
     }
+    // else{
+    //   toast.error("Invalid login details");
+    // }
   }
 
   async function handleSignup(e) {
@@ -115,7 +162,7 @@ export default function Register() {
         const response = await userCreate(signup);
         console.log(response);
         if (response.status === 201) {
-          toast("Registered successfully");
+          toast.success("Registered successfully");
           setValue(true);
 
           setsignup({ name: "", email: "", password: "", confirmPassword: "" });
@@ -143,14 +190,16 @@ export default function Register() {
               <div className={styles.inputBorder}>
                 <img src="/images/icon.png" alt="" />
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   placeholder="Email"
                   value={login.email}
                   onChange={handlechange1}
-                  required
+                  // required
                 />
               </div>
+              {loginError.email && (
+                <p className={styles.displayLoginError}>{loginErrorMsg.email.message}</p> )}
 
               <div className={styles.inputBorder}>
                 <img src="/images/lock.png" alt="" />
@@ -160,11 +209,12 @@ export default function Register() {
                   placeholder="Password"
                   value={login.password}
                   onChange={handlechange1}
-                  required
+                  // required
                 />
                 <img src={loginPassVisible ? "/images/view.png" : "/images/viewoff.png"} alt="" className={styles.passwordview} onClick={toggleLoginPassword}/>
               </div>
-
+              {loginError.password && (
+                <p className={styles.displayLoginError}>{loginErrorMsg.password.message}</p> )}
               <button type="submit">Login</button>
             </form>
             <p>Have no account yet?</p>
@@ -200,7 +250,7 @@ export default function Register() {
               </div>
 
               {errors.name && (
-                <p className={styles.errmsg}>{errorMessages.name.message}</p>
+                <p className={styles.displayError}>{errorMessages.name.message}</p>
               )}
               <div className={styles.inputBorder}>
                 <img src="/images/Profile.png" alt="" />
@@ -213,7 +263,7 @@ export default function Register() {
                 />
               </div>
 
-              {errors.email && <p>{errorMessages.email.message}</p>}
+              {errors.email && <p className={styles.displayError}>{errorMessages.email.message}</p>}
               <div className={styles.inputBorder}>
                 <img src="/images/lock.png" alt="" />
                 <input
@@ -235,7 +285,7 @@ export default function Register() {
                 />
               </div>
 
-              {errors.password && <p>{errorMessages.password.message}</p>}
+              {errors.password && <p className={styles.displayError}>{errorMessages.password.message}</p>}
               <div className={styles.inputBorder}>
                 <img src="/images/lock.png" alt="" />
                 <input
@@ -258,7 +308,7 @@ export default function Register() {
               </div>
 
               {errors.confirmPassword && (
-                <p>{errorMessages.confirmPassword.message}</p>
+                <p className={styles.displayError}>{errorMessages.confirmPassword.message}</p>
               )}
               <button type="submit">Register</button>
             </form>
