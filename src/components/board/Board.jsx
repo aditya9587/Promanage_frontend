@@ -7,6 +7,7 @@ import {
   updateTaskStatus,
 } from "../../services/Userlogin";
 import AddTask from "../Addtask/AddTask";
+import AddEmail from "../AddEmail/AddEmail";
 
 export default function Board() {
   const [currentDate, setCurrentDate] = useState("");
@@ -14,6 +15,7 @@ export default function Board() {
   const [tasks, setTasks] = useState([]);
   const [filterTask, setFilterTask] = useState(false);
   const [filterTaskValue, setFilterTaskValue] = useState("ALL");
+  const [addEmail, setAddEmail] = useState(false);
 
   // set Date
   useEffect(() => {
@@ -27,8 +29,8 @@ export default function Board() {
 
   useEffect(() => {
     async function fetchTask() {
-      const response = await getTodos(); // To fetch Task
-      setTasks(response.data.data); //to set task
+      const response = await getTodos(); 
+      setTasks(response.data.data); 
     }
     fetchTask();
   }, [setTasks]);
@@ -100,9 +102,10 @@ export default function Board() {
           </div>
 
           <div className={styles.mainDash2}>
-            <div>
+            <div className={styles.insidemaindash2}>
               <h2>Board</h2>
-              {/* <p>add people</p> */}
+              <span onClick={()=>setAddEmail(true)}>  <img src="/images/addpeople.png" alt="" />Add People</span>
+              
             </div>
 
             <p onClick={() => setFilterTask(!filterTask)}>
@@ -155,6 +158,9 @@ export default function Board() {
           ))}
         </div>
       </div>
+    {addEmail ? <AddEmail ontap ={()=>setAddEmail(false)}/> : null}
+  
+  
       {todoModal ? (
         <AddTask
           onClose={() => setTodoModal(false)}

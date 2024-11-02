@@ -1,5 +1,6 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import style from "./Displaytodo.module.css";
+import { getUserById } from "../../services/Userlogin";
 
 export default function Displaytodo({ onStatusChange, tasks, onDeleteTask }) {
   const dropdownRef = useRef(null);
@@ -10,11 +11,12 @@ export default function Displaytodo({ onStatusChange, tasks, onDeleteTask }) {
     inProgress: false,
     done: false,
   });
+  const [userNames, setUserNames] = useState({});
 
   const toggleChecklistVisibility = (todoId) => {
     setChecklistVisibility((prevState) => ({
       ...prevState,
-      [todoId]: !prevState[todoId], // Toggle visibility for the specific todo
+      [todoId]: !prevState[todoId], 
     }));
   };
 
@@ -24,7 +26,7 @@ export default function Displaytodo({ onStatusChange, tasks, onDeleteTask }) {
     }
   }
   const showDropdown = () => {
-    setDropdown((prev) => !prev); // Toggle dropdown state
+    setDropdown((prev) => !prev); 
   };
 
   async function handleDeleteClick(id) {
@@ -49,6 +51,45 @@ export default function Displaytodo({ onStatusChange, tasks, onDeleteTask }) {
     }
   };
 
+  const getInitials = (name) => {
+    if (!name) return "";
+    const initials = name
+      .split(" ")
+      .map((word) => word[0])
+      .join("");
+    return initials.toUpperCase();
+  };
+
+
+
+  useEffect(() => {
+    const fetchUserNames = async () => {
+      const userMap = {};
+      try {
+        await Promise.all(
+          tasks.map(async (task) => {
+            if (task.assignTo) { 
+              const response = await getUserById(task.assignTo); 
+              const userName = response.data && response.data.user ? response.data.user.name : null; 
+              if (userName) {
+                userMap[task._id] = userName; 
+              } else {
+                console.error(`User not found for task ID: ${task._id}`);
+              }
+            }
+          })
+        );
+        setUserNames(userMap); 
+      } catch (error) {
+        console.error("Error fetching user names:", error); 
+      }
+    };
+  
+    if (tasks.length > 0) {
+      fetchUserNames();
+    }
+  }, [tasks]);
+
   return (
     <div className={style.container}>
       <div className={style.serprate}>
@@ -56,7 +97,14 @@ export default function Displaytodo({ onStatusChange, tasks, onDeleteTask }) {
           tasks.map((task) => (
             <div key={task._id} className={style.mapDiv}>
               <div className={style.header}>
-                <p className={style.priotymsg}>{task.priority} </p>
+                <p className={style.priotymsg}>
+                  {task.priority}{" "}
+                  {task.assignTo && userNames[task._id] && (
+                    <span className={style.initials}>
+                      {getInitials(userNames[task._id])}
+                    </span>
+                  )}
+                </p>
                 <img
                   src="/images/option.png"
                   alt=""

@@ -5,14 +5,12 @@ import Sidebar from "../../components/SideBar/Sidebar";
 import Board from "../../components/board/Board";
 import Analytics from "../../components/Analytics/Analytics";
 import Setting from "../../components/settings/Setting";
-import AddTask from "../../components/Addtask/AddTask";
-import Deletepopup from "../../components/deletepopup/Deletepopup";
 
 function Dashboard() {
   const [activeComponent, setActiveComponent] = useState("Board");
 
-  function activeComponentValue(value){
-    setActiveComponent(value)
+  function activeComponentValue(value) {
+    setActiveComponent(value);
   }
 
   const renderComponent = () => {
@@ -30,10 +28,9 @@ function Dashboard() {
 
   return (
     <div className={styles.mainContainer}>
-      <Sidebar setValue={activeComponentValue}/>
-     
+      <Sidebar setValue={activeComponentValue} />
+
       <div className={styles.rightContainer}>{renderComponent()}</div>
-      {/* {deletePopup ? <Deletepopup/> : null}  */}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import style from "./Analytics.module.css";
-import { getTodos } from "../../services/Userlogin"; // Adjust the import path as necessary
+import { getTodos } from "../../services/Userlogin"; 
 
 function Analytics() {
   const [tasks, setTasks] = useState([]);
@@ -17,8 +17,8 @@ function Analytics() {
 
   useEffect(() => {
     async function fetchTasks() {
-      const response = await getTodos(); // Fetch tasks from the backend
-      setTasks(response.data.data); // Set tasks
+      const response = await getTodos(); 
+      setTasks(response.data.data); 
     }
     fetchTasks();
   }, []);

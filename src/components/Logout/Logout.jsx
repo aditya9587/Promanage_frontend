@@ -22,8 +22,7 @@ export default function Logout({onClose}) {
       <h3 className={style.logoutHeading}>Are you sure you want to Logout?</h3>
       <button  onClick={removeToken} className={style.logoutBtn}>Yes, Logout</button>
       <button className={style.cancelBtn} onClick={onClose}>Cancel</button>
-      </div>
-      
+      </div>  
     </div>
   );
 }

@@ -79,7 +79,6 @@ export default function AddTask({ onClose, onTaskAdd }) {
     }
     try {
       const response = await todoCreate(formData);
-      console.log(priorityValue);
       if (response && response.data.datamsg) {
         onTaskAdd(response.data.datamsg);
         toast.success("Task created successfully!");
@@ -116,7 +115,9 @@ export default function AddTask({ onClose, onTaskAdd }) {
     const newInputs = [...inputs];
     newInputs[index].checked = !newInputs[index].checked;
     setInputs(newInputs);
+    setFormData((prevData) => ({  ...prevData, checklist: newInputs }));
   };
+  
   //to delete the checklist
   const deleteChecklist = (index) => {
     const updatedInputs = inputs.filter((_, i) => i !== index);
@@ -126,7 +127,7 @@ export default function AddTask({ onClose, onTaskAdd }) {
   return (
     <div className={styles.container} ref={modalref} onClick={closeModal}>
       <form className={styles.formClass}>
-        <label htmlFor="">
+        <label>
           <p>
             Title<span className={styles.starSpan}>*</span>
           </p>
@@ -204,8 +205,6 @@ export default function AddTask({ onClose, onTaskAdd }) {
             <div key={index} className={styles.checklistBox}>
               <input
                 type="checkbox"
-                name=""
-                id=""
                 checked={input.checked}
                 onChange={() => handleCheckboxChange(index)}
               />
@@ -217,7 +216,6 @@ export default function AddTask({ onClose, onTaskAdd }) {
                 className={styles.inputTypeText}
                 required
               />
-              {/* delete image */}
               <img
                 src="/images/Delete.png"
                 alt=""
@@ -239,7 +237,6 @@ export default function AddTask({ onClose, onTaskAdd }) {
           />
 
           <button className={styles.fbtn2} onClick={onClose}>
-            {" "}
             Cancel
           </button>
           <button className={styles.fbtn3} onClick={handleTodoSave}>

@@ -19,7 +19,18 @@
   justify-content: space-between;
   width: 100%;
 }
+.insidemaindash2{
+  display: flex;
+  height: 20px;
+  gap: 10px;
+  align-items: center;
+  width: fit-content;
+}
 
+.insidemaindash2 span{
+  color: #707070;
+  cursor: pointer;
+}
 .todoGroup {
   height: 80vh;
   display: flex;

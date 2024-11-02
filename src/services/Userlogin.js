@@ -1,4 +1,4 @@
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 export const userCreate = (data) => {
   try {
@@ -22,10 +22,8 @@ export const userLogin = (data) => {
         Authorization: `${token}`,
       },
     });
-    console.log(res);
     return res;
   } catch (error) {
-    console.log(error);
     return res.status(400).json({ message: "api call error" });
   }
 };
@@ -55,9 +53,7 @@ export const getTodos = () => {
   });
   return res;
   } catch (error) {
-    if(isAxiosError){
-      console.log(isAxiosError)
-    }
+    return res.status(400).json({ message: "api call error" });
   }
   
 };
@@ -74,9 +70,8 @@ export const updateTaskStatus = async (mainID, newStatus) => {
         },
       }
     );
-    console.log("Task status successfully updated");
   } catch (error) {
-    console.error("Error updating task status in the backend:", error);
+    return res.status(400).json({ message: "api call error" });
   }
 };
 
@@ -91,12 +86,8 @@ export const deleteTask = async (id) => {
         },
       }
     );
-    console.log("Task Sucessfully deleted");
   } catch (error) {
-    console.log("error deleting the task in the backend", error);
-    if (isAxiosError) {
-      console.log(isAxiosError);
-    }
+   return res.status(400).json({ message: "api call error" });
   }
 };
 
@@ -111,17 +102,11 @@ export const editTask = async (id) => {
         },
       }
     );
-    console.log("Task Sucessfully updated");
   } catch (error) {
-    console.log("error deleting the task in the backend", error);
-    if (isAxiosError) {
-      console.log(isAxiosError);
-    }
+    return res.status(400).json({ message: "api call error" });
   }
 };
 
-
-//settings tab Route
 
 export const updateUser = (data) =>{
   try {
@@ -133,9 +118,7 @@ export const updateUser = (data) =>{
     })
     return res;
   } catch (error) {
-    if(isAxiosError){
-      console.log(isAxiosError)
-    }
+    return res.status(400).json({ message: "api call error" });
   }
 }
 
@@ -149,8 +132,20 @@ export const getallUser = () =>{
     })
     return res;
   } catch (error) {
-    if(isAxiosError){
-      console.log(isAxiosError)
-    }
+   return res.status(400).json({ message: "api call error" });
+  }
+}
+
+export const getUserById = (id) =>{
+  try {
+    const token = localStorage.getItem("token")
+    const res = axios.get(`${import.meta.env.VITE_BASE_URL}/getuser/${id}`,{
+      headers:{
+        Authorization : `${token}`
+      },
+    })
+    return res;
+  } catch (error) {
+   return res.status(400).json({ message: "api call error" });
   }
 }

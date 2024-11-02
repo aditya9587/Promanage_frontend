@@ -13,8 +13,6 @@ ul li span{
   text-align: end;
 }
 
-
-
 ul li::marker{
   color: #90C4CC;
   font-size:x-large;

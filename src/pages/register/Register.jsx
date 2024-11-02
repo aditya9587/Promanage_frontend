@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import styles from "./Register.module.css";
 import { userCreate, userLogin } from "../../services/Userlogin";
 import { useNavigate } from "react-router-dom";
-import { contextUser } from "../../context/UserContext";
 import { jwtDecode } from "jwt-decode";
 
 export default function Register() {
@@ -137,7 +136,6 @@ export default function Register() {
       const response = await userLogin(login);
       if (response.status === 200) {
         const token = response.data.Token;
-        console.log(response)
         const userPayloadData = jwtDecode(token)
         localStorage.setItem("token", token);
         localStorage.setItem("name", userPayloadData.name)
@@ -149,9 +147,6 @@ export default function Register() {
     } catch (error) {
       toast.error("Invalid Email or password");
     }
-    // else{
-    //   toast.error("Invalid login details");
-    // }
   }
 
   async function handleSignup(e) {
@@ -160,7 +155,6 @@ export default function Register() {
     if (validateSignup()) {
       try {
         const response = await userCreate(signup);
-        console.log(response);
         if (response.status === 201) {
           toast.success("Registered successfully");
           setValue(true);
@@ -195,7 +189,6 @@ export default function Register() {
                   placeholder="Email"
                   value={login.email}
                   onChange={handlechange1}
-                  // required
                 />
               </div>
               {loginError.email && (
@@ -209,7 +202,6 @@ export default function Register() {
                   placeholder="Password"
                   value={login.password}
                   onChange={handlechange1}
-                  // required
                 />
                 <img src={loginPassVisible ? "/images/view.png" : "/images/viewoff.png"} alt="" className={styles.passwordview} onClick={toggleLoginPassword}/>
               </div>
