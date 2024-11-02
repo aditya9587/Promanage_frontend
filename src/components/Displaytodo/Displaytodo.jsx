@@ -1,14 +1,14 @@
 import React, { useState, useContext, useRef } from "react";
 import style from "./Displaytodo.module.css";
 
-export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
+export default function Displaytodo({ onStatusChange, tasks, onDeleteTask }) {
   const dropdownRef = useRef(null);
   const [dropdown, setDropdown] = useState(false);
   const [checklistVisibility, setChecklistVisibility] = useState({
-    todo:false,
-    backlog:false,
-    inProgress:false,
-    done:false,
+    todo: false,
+    backlog: false,
+    inProgress: false,
+    done: false,
   });
 
   const toggleChecklistVisibility = (todoId) => {
@@ -27,10 +27,28 @@ export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
     setDropdown((prev) => !prev); // Toggle dropdown state
   };
 
-  async function handleDeleteClick (id){
+  async function handleDeleteClick(id) {
     await onDeleteTask(id);
-    setDropdown(false)
+    setDropdown(false);
   }
+
+  const getDueDateClass = (priority, status, dueDate) => {
+    const isOverdue = dueDate && new Date(dueDate) < new Date();
+    if (status === "done") return style.done;
+    if (isOverdue) return style.overdue;
+
+    switch (priority) {
+      case "HIGH PRIORITY":
+        return style.highPriority;
+      case "MODERATE PRIORITY":
+        return style.moderatePriority;
+      case "LOW PRIORITY":
+        return style.lowPriority;
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className={style.container}>
       <div className={style.serprate}>
@@ -53,9 +71,13 @@ export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
                   >
                     <button>EDIT</button>
                     <button>SHARE</button>
-                    <button className={style.dropdownbtn3} onClick={()=> handleDeleteClick(task._id)}>DELETE</button>
+                    <button
+                      className={style.dropdownbtn3}
+                      onClick={() => handleDeleteClick(task._id)}
+                    >
+                      DELETE
+                    </button>
                   </div>
-                
                 ) : null}
               </div>
 
@@ -99,7 +121,14 @@ export default function Displaytodo({ onStatusChange, tasks , onDeleteTask }) {
               </div>
 
               <div className={style.fotterDiv}>
-                <span className={style.dueDate} key={task._id}>
+                <span
+                  className={` ${style.dueDate} ${getDueDateClass(
+                    task.priority,
+                    task.status,
+                    task.dueDate
+                  )}`}
+                  key={task._id}
+                >
                   {task.dueDate
                     ? new Date(task.dueDate).toLocaleDateString("en-US", {
                         month: "short",

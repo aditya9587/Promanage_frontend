@@ -1,0 +1,51 @@
+.AddEmailContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
+  position: fixed;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+.formSubmit {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: 30vh;
+  width: 30vw;
+  padding: 20px;
+  gap: 20px;
+  border-radius: 14px;
+}
+.formSubmit input {
+  height: 40px;
+  outline: none;
+  border: 1px solid gray;
+  padding: 5px;
+  border-radius: 4px;
+}
+.btnDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.cancelbtn {
+  width: 50%;
+  height: 30px;
+  background-color: transparent;
+  color: red;
+  border: 1px solid red;
+  border-radius: 4px;
+}
+.addbtn {
+  width: 50%;
+  height: 30px;
+  background-color: #17A2B8;
+  outline: none;
+  border-radius: 4px;
+  border: none;
+  color: white;
+}

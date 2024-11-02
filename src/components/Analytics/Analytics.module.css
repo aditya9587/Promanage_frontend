@@ -13,10 +13,12 @@ ul li span{
   text-align: end;
 }
 
+
+
 ul li::marker{
   color: #90C4CC;
   font-size:x-large;
-  text-align: center;
+  text-align: center;;
 }
 .taskDiv{
   background-color: #F9FCFF;
@@ -26,6 +28,12 @@ ul li::marker{
   font-weight: 400;
   font-size: 18px;
 }
+
+ .taskDiv ul li{
+  display: flex;
+  justify-content:space-around;
+  margin: 5px , 20px;
+} 
 .priorityDiv{
   background-color: #F9FCFF;
   height: 50vh;

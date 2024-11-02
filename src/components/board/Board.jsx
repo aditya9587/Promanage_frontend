@@ -32,6 +32,7 @@ export default function Board() {
     }
     fetchTask();
   }, [setTasks]);
+
   const boardname = localStorage.getItem("name");
 
   // TO chnge the Status of the task
@@ -109,39 +110,17 @@ export default function Board() {
             </p>
             {filterTask ? (
               <div className={styles.filterTask}>
-                <p
-                  onClick={() => {
-                    setFilterTaskValue("Today");
-                    setFilterTask(!filterTask);
-                  }}
-                >
-                  Today
-                </p>
-                <p
-                  onClick={() => {
-                    setFilterTaskValue("This Week");
-                    setFilterTask(!filterTask);
-                  }}
-                >
-                  This Week
-                </p>
-                <p
-                  onClick={() => {
-                    setFilterTaskValue("This Month");
-                    setFilterTask(!filterTask);
-                  }}
-                >
-                  This Month
-                </p>
-                <p
-                  onClick={() => {
-                    setFilterTaskValue("All");
-                    setFilterTask(!filterTask);
-                  }}
-                >
-                  {" "}
-                  All
-                </p>
+             {["Today", "This Week", "This Month", "All"].map((filter) => (
+                  <p
+                    key={filter}
+                    onClick={() => {
+                      setFilterTaskValue(filter);
+                      setFilterTask(false);
+                    }}
+                  >
+                    {filter}
+                  </p>
+                ))}
               </div>
             ) : null}
           </div>
@@ -152,7 +131,7 @@ export default function Board() {
             <div key={status} className={styles.insideGroup}>
               <div className={styles.taskHeading}>
                 <span>{status}</span>
-                {tasks.filter((task) => task.status == "todo") ? (
+                {status === "todo" ? (
                   <img
                     src="/images/add.png"
                     onClick={() => setTodoModal(!todoModal)}

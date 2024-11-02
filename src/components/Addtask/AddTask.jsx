@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { todoCreate } from "../../services/Userlogin";
+import { getallUser, todoCreate } from "../../services/Userlogin";
 
 export default function AddTask({ onClose, onTaskAdd }) {
   const modalref = useRef();
@@ -13,6 +13,7 @@ export default function AddTask({ onClose, onTaskAdd }) {
 
   const [inputs, setInputs] = useState([]); //TO add checklist
   const [priorityValue, setPriority] = useState(); //To add priority
+  const [email, setEmail] = useState([]);
 
   // send data to api
   const [formData, setFormData] = useState({
@@ -20,8 +21,20 @@ export default function AddTask({ onClose, onTaskAdd }) {
     priority: "",
     checklist: [],
     dueDate: null,
+    assignTo: "",
   });
 
+  //to fetch all the users
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await getallUser();
+      if (response && response.data && response.data.users) {
+        const userEmails = response.data.users.map(user => user.email);
+        setEmail(userEmails);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   //TO SET FORM DATA
   useEffect(() => {
@@ -45,7 +58,7 @@ export default function AddTask({ onClose, onTaskAdd }) {
       toast.error("Please enter a task title.");
       return;
     }
-  
+
     // Check if priority is selected
     if (!formData.priority) {
       toast.error("Please select a priority level.");
@@ -57,18 +70,26 @@ export default function AddTask({ onClose, onTaskAdd }) {
       return;
     }
 
-      const emptyChecklistItems = formData.checklist.some((item) => !item.text.trim());
-      if (emptyChecklistItems) {
-        toast.error("Please fill out all checklist items.");
-        return;
-      }
+    const emptyChecklistItems = formData.checklist.some(
+      (item) => !item.text.trim()
+    );
+    if (emptyChecklistItems) {
+      toast.error("Please fill out all checklist items.");
+      return;
+    }
+    try {
       const response = await todoCreate(formData);
       console.log(priorityValue);
       if (response && response.data.datamsg) {
         onTaskAdd(response.data.datamsg);
+        toast.success("Task created successfully!");
       }
-      onClose();
-    
+    } catch (error) {
+      toast.error("Error creating task.");
+      console.error("Error creating task:", error);
+    }
+  
+    onClose();
   }
 
   //CREATING CHECKIST COUNT
@@ -134,7 +155,7 @@ export default function AddTask({ onClose, onTaskAdd }) {
               <span className={`${styles.bullet} ${styles.high}`}></span> High
               priority
             </label>
-            <label >
+            <label>
               <input
                 type="radio"
                 name="priority"
@@ -145,7 +166,7 @@ export default function AddTask({ onClose, onTaskAdd }) {
               <span className={`${styles.bullet} ${styles.moderate}`}></span>{" "}
               Moderate priority
             </label>
-            <label >
+            <label>
               <input
                 type="radio"
                 name="priority"
@@ -159,10 +180,22 @@ export default function AddTask({ onClose, onTaskAdd }) {
           </div>
         </div>
 
-        <label htmlFor="">
+        <label>
           Assign to
-          <input type="text" className={styles.inputTypeText} />
+        <select
+          value={formData.assignTo}
+          onChange={(e) => setFormData({ ...formData, assignTo: e.target.value })}
+          className={styles.inputTypeText}
+        >
+          <option value="">Select user</option>
+          {email.map((userEmail, index) => (
+            <option key={index} value={userEmail}>
+              {userEmail}
+            </option>
+          ))}
+        </select>
         </label>
+
         <p>
           Checklist ({checklistCount()}/{inputs.length})
         </p>

@@ -1,6 +1,4 @@
-
-
- .container{ 
+.container {
   font-family: "Poppins", serif;
   height: fit-content;
   width: 22vw;
@@ -10,21 +8,19 @@
   line-height: 2rem;
 }
 .serprate {
-  gap: 30px; /* Increase the gap if needed */
-
+  gap: 30px; 
 }
 
 .mapDiv {
   margin-bottom: 20px;
   padding: 15px;
-  /* border: 1px solid #ccc; */
+
   border-radius: 8px;
-  background-color:white;
+  background-color: white;
   position: relative;
 }
 
-
-.header{
+.header {
   display: flex;
   height: fit-content;
   justify-content: space-between;
@@ -32,29 +28,27 @@
   color: black;
 }
 
-.priotymsg{
-  font-size:xx-small;
+.priotymsg {
+  font-size: xx-small;
   margin-right: auto;
 }
-.todoTitle{
+.todoTitle {
   font-weight: 500;
 }
 
-.editIcon{
+.editIcon {
   height: auto;
   width: 20px;
 }
 
-.checkDiv{
+.checkDiv {
   display: flex;
   flex-direction: column;
   font-family: "Inter", sans-serif;
   justify-content: space-between;
   margin: 10px 0px;
-  /* align-items: center; */
 }
-.dropdown{
-  /* inset: 0; */
+.dropdown {
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -63,52 +57,52 @@
   width: 100px;
   align-items: start;
   justify-content: space-evenly;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   position: absolute;
-  top:6vh; left:60%;
+  top: 6vh;
+  left: 60%;
   z-index: 0;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  
 }
-.dropdown button{
+.dropdown button {
   border: none;
   background: none;
   font-family: "Poppins", serif;
   font-weight: 500;
 }
-.dropdownbtn3{
+.dropdownbtn3 {
   color: red;
 }
-.insideCheckDiv{
+.insideCheckDiv {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-.checkHeading{
+.checkHeading {
   font-weight: 500;
 }
-.checkDiv img{
+.checkDiv img {
   height: 20px;
   width: 20px;
 }
 
-.fotterDiv{
+.fotterDiv {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   font-family: "Poppins", serif;
-} 
-.dueDate{
+}
+.dueDate {
   font-size: small;
   height: max-content;
-  padding: 5px   ;
-  border-radius: 18px;
-  background-color: beige;
+  width: 50px;
+  text-align: center;
+  border-radius: 8px;
   margin-right: auto;
 }
-.fotterDiv button{
+.fotterDiv button {
   font-family: "Poppins", serif;
   height: max-content;
   width: 50px;
@@ -137,4 +131,27 @@
   margin-right: 10px;
 }
 
+.highPriority {
+  background-color: red;
+  color: white;
+}
 
+.moderatePriority {
+  background-color: grey;
+  color: white;
+}
+
+.lowPriority {
+  background-color: grey;
+  color: white;
+}
+
+.done {
+  background-color: green;
+  color: white;
+}
+
+.overdue {
+  background-color: red;
+  color: white;
+}

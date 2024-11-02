@@ -137,5 +137,20 @@ export const updateUser = (data) =>{
       console.log(isAxiosError)
     }
   }
+}
 
+export const getallUser = () =>{
+  try {
+    const token = localStorage.getItem("token")
+    const res = axios.get(`${import.meta.env.VITE_BASE_URL}/getallUser`,{
+      headers:{
+        Authorization : `${token}`
+      },
+    })
+    return res;
+  } catch (error) {
+    if(isAxiosError){
+      console.log(isAxiosError)
+    }
+  }
 }
